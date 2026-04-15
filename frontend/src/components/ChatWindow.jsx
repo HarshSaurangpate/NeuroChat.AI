@@ -23,19 +23,23 @@ export default function ChatWindow() {
   // ── Empty / loading states ──────────────────────────────────────────────────
   if (!activeThreadId) {
     return (
-      <div className="flex flex-col items-center justify-center h-full gap-4 text-center px-6">
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-600
-                        flex items-center justify-center shadow-xl">
-          <span className="text-white text-2xl font-bold">N</span>
-        </div>
-        <h1 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
-          Welcome to NeuroChat
-        </h1>
-        <p className="text-gray-500 dark:text-gray-400 max-w-sm text-sm">
-          Start a new conversation from the sidebar, or select an existing one.
-        </p>
-      </div>
-    );
+  <div className="flex flex-col items-center justify-center h-full gap-4 text-center px-6 bg-[#0d1117]">
+    
+    <div className="w-16 h-16 rounded-xl bg-[#0d0f0e]
+                    flex items-center justify-center shadow-md">
+      <span className="text-white text-2xl font-bold">N</span>
+    </div>
+
+    <h1 className="text-2xl font-semibold text-[#e6edf3]">
+      Welcome to NeuroChat
+    </h1>
+
+    <p className="text-[#8b949e] max-w-sm text-sm">
+      Start a new conversation from the sidebar, or select an existing one.
+    </p>
+
+  </div>
+);
   }
 
   if (isLoadingMessages) {

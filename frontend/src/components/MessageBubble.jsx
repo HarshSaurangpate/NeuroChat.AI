@@ -10,67 +10,75 @@ export default function MessageBubble({ message, isStreaming = false }) {
   const isUser = message.role === 'user';
 
   return (
+  <div
+    className={`flex items-start gap-3 px-4 py-3 animate-fade-in ${
+      isUser ? 'flex-row-reverse' : 'flex-row'
+    }`}
+  >
+    {/* Avatar */}
     <div
-      className={`flex items-start gap-3 px-4 py-2 animate-fade-in ${
-        isUser ? 'flex-row-reverse' : 'flex-row'
-      }`}
+      className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold
+        ${
+          isUser
+            ? 'bg-[#343e3c] text-white'
+            : 'bg-[#23282f] text-[#e6edf3]'
+        }`}
     >
-      {/* Avatar */}
-      <div
-        className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shadow-md
-          ${
-            isUser
-              ? 'bg-gradient-to-br from-emerald-400 to-teal-500 text-white'
-              : 'bg-gradient-to-br from-violet-500 to-indigo-600 text-white'
-          }`}
-      >
-        {isUser ? 'U' : 'N'}
-      </div>
-
-      {/* Bubble */}
-      <div
-        className={`max-w-[75%] md:max-w-[65%] rounded-2xl shadow-sm
-          ${
-            isUser
-              ? 'bg-gradient-to-br from-violet-600 to-indigo-600 text-white rounded-tr-sm px-4 py-3'
-              : 'bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-gray-800 dark:text-gray-100 rounded-tl-sm px-4 py-3'
-          }`}
-      >
-        {isUser ? (
-          <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
-        ) : (
-          <div className="prose-chat text-sm">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              components={{
-                code({ node, inline, className, children, ...props }) {
-                  const match = /language-(\w+)/.exec(className || '');
-                  return !inline && match ? (
-                    <CodeBlock language={match[1]} code={String(children).replace(/\n$/, '')} />
-                  ) : (
-                    <code className={className} {...props}>
-                      {children}
-                    </code>
-                  );
-                },
-              }}
-            >
-              {message.content}
-            </ReactMarkdown>
-            {/* Blinking cursor while streaming */}
-            {isStreaming && (
-              <span className="inline-block w-0.5 h-4 bg-violet-500 ml-0.5 animate-pulse" />
-            )}
-          </div>
-        )}
-
-        {/* Timestamp */}
-        <p className={`text-[10px] mt-1.5 ${isUser ? 'text-indigo-200' : 'text-gray-400 dark:text-gray-500'}`}>
-          {new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-        </p>
-      </div>
+      {isUser ? 'U' : 'N'}
     </div>
-  );
+
+    {/* Bubble */}
+    <div
+      className={`max-w-[75%] md:max-w-[65%] px-4 py-3 text-sm leading-relaxed
+        ${
+          isUser
+            ? 'bg-[#272b2a] text-white rounded-2xl rounded-tr-sm'
+            : 'bg-transparent text-[#e6edf3]'
+        }`}
+    >
+      {isUser ? (
+        <p className="whitespace-pre-wrap">{message.content}</p>
+      ) : (
+        <div className="prose-chat text-sm text-[#e6edf3]">
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+              code({ node, inline, className, children, ...props }) {
+                const match = /language-(\w+)/.exec(className || '');
+                return !inline && match ? (
+                  <CodeBlock language={match[1]} code={String(children).replace(/\n$/, '')} />
+                ) : (
+                  <code className="bg-[#21262d] px-1 py-0.5 rounded text-[#e6edf3]" {...props}>
+                    {children}
+                  </code>
+                );
+              },
+            }}
+          >
+            {message.content}
+          </ReactMarkdown>
+
+          {/* Blinking cursor while streaming */}
+          {isStreaming && (
+            <span className="inline-block w-0.5 h-4 bg-[#2d3432] ml-0.5 animate-pulse" />
+          )}
+        </div>
+      )}
+
+      {/* Timestamp */}
+      <p
+        className={`text-[10px] mt-1.5 ${
+          isUser ? 'text-white/70' : 'text-[#8b949e]'
+        }`}
+      >
+        {new Date(message.createdAt).toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        })}
+      </p>
+    </div>
+  </div>
+);
 }
 
 /** Code block with language label + copy button */
